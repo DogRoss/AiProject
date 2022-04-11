@@ -1,0 +1,13 @@
+﻿  Using 'git status' to determine working set for adaptive non-unity build (C:\Users\s219052\Documents\GitHub\AiProject).
+  Creating makefile for AiProjectEditor (no existing makefile)
+  Building AiProjectEditor...
+  Using Visual Studio 2019 14.24.28316 toolchain (C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.24.28314) and Windows 10.0.18362.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+  Building 4 actions with 8 processes...
+    [1/4] PlayerCharacter.cpp
+    [2/4] UE4Editor-AiProject.lib
+       Creating library C:\Users\s219052\Documents\GitHub\AiProject\AiProject\Intermediate\Build\Win64\UE4Editor\Development\AiProject\UE4Editor-AiProject.lib and object C:\Users\s219052\Documents\GitHub\AiProject\AiProject\Intermediate\Build\Win64\UE4Editor\Development\AiProject\UE4Editor-AiProject.exp
+    [3/4] UE4Editor-AiProject.dll
+       Creating library C:\Users\s219052\Documents\GitHub\AiProject\AiProject\Intermediate\Build\Win64\UE4Editor\Development\AiProject\UE4Editor-AiProject.suppressed.lib and object C:\Users\s219052\Documents\GitHub\AiProject\AiProject\Intermediate\Build\Win64\UE4Editor\Development\AiProject\UE4Editor-AiProject.suppressed.exp
+    [4/4] AiProjectEditor.target
+  Total time in Parallel executor: 55.27 seconds
+  Total execution time: 67.34 seconds
