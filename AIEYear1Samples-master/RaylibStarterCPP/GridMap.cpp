@@ -55,7 +55,10 @@ Vector2 GridMap::AddVectors(Vector2 lhs, Vector2 rhs)
 
 void GridMap::Draw()
 {
+	DrawRectangle(gridPosition.x - (gridWorldSize.x / 2), gridPosition.y - (gridWorldSize.y / 2), gridWorldSize.x, gridWorldSize.y, BLACK);
+
+
 	for (int i = 0; i < gridSizeX * gridSizeY; i++) {
-		DrawRectangle(grid[i].position.x, grid[i].position.y, nodeRadius, nodeRadius, RED);
+		DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, RED);
 	}
 }
