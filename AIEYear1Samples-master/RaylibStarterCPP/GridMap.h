@@ -14,6 +14,7 @@ class GridMap
 	*/
 
 public:
+	GridMap(int nRadius, Vector2 gWorldSize, Vector2 gPosition);
 	
 	Vector2 gridPosition;
 	Vector2 gridWorldSize; //width/height in world space
@@ -26,7 +27,6 @@ public:
 	float nodeDiameter; //stores diameter of nodes, is double the nodeRadius
 	int gridSizeX, gridSizeY; //Node grid array size
 
-	GridMap(int nRadius, Vector2 gWorldSize, Vector2 gPosition);
 	
 	void CreateGrid();
 
@@ -35,7 +35,5 @@ public:
 	Vector2 AddVectors(Vector2 lhs, Vector2 rhs); //adds two specified vectors together
 
 	void Draw();
-
-	void OnDraw();
 };
 

@@ -4,7 +4,7 @@
 class Node
 {
 public:
-    Node();
+    Node() : position(Vector2()), gridX(0), gridY(0) {};
 
     Node(Vector2 nPos, int nGridX, int nGridY) 
         : position(nPos), gridX(nGridX), gridY(nGridY) {};

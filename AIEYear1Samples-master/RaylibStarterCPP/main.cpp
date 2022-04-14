@@ -20,10 +20,15 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include "GridMap.h"
 
 #define RAYGUI_IMPLEMENTATION
 #define RAYGUI_SUPPORT_ICONS
 #include "raygui.h"
+
+void InitializeGrid() {
+
+}
 
 int main(int argc, char* argv[])
 {
@@ -36,6 +41,13 @@ int main(int argc, char* argv[])
 
     SetTargetFPS(60);
     //--------------------------------------------------------------------------------------
+
+    Vector2 gWorldSize;
+    Vector2 gPosition;
+    gWorldSize.x = screenWidth, gWorldSize.y = screenHeight;
+    gPosition.x = screenWidth / 2, gPosition.y = screenHeight / 2;
+
+    GridMap grid = GridMap(10, gWorldSize, gPosition);
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -52,6 +64,8 @@ int main(int argc, char* argv[])
         ClearBackground(RAYWHITE);
 
         DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+
+        grid.Draw();
 
         EndDrawing();
         //----------------------------------------------------------------------------------
