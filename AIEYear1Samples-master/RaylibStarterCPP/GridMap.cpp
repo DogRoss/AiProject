@@ -53,12 +53,34 @@ Vector2 GridMap::AddVectors(Vector2 lhs, Vector2 rhs)
 	return result;
 }
 
+Node GridMap::NodeFromWorldPosition(Vector2 nWorldPos) //grabs the node found at the specified world pos
+{
+	float xPoint = ((nWorldPos.x + gridWorldSize.x / 2) / gridWorldSize.x);
+	float yPoint = ((nWorldPos.y + gridWorldSize.y / 2) / gridWorldSize.y);
+
+	float min = 0, float max = 0;
+	xPoint = std::clamp(xPoint, min, max);
+	yPoint = std::clamp(yPoint, min, max);
+
+	int x = round((gridSizeX - 1) * xPoint);
+	int y = round((gridSizeY - 1) * yPoint);
+
+	return grid[TraverseGrid(x, y)];
+}
+
 void GridMap::Draw()
 {
-	DrawRectangle(gridPosition.x - (gridWorldSize.x / 2), gridPosition.y - (gridWorldSize.y / 2), gridWorldSize.x, gridWorldSize.y, BLACK);
-
-
+	Color regNode = BLACK;
+	Color fPathNode = RED;
 	for (int i = 0; i < gridSizeX * gridSizeY; i++) {
-		DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, RED);
+
+		if (!finalPath.empty()) {
+			if (std::find(finalPath.begin(), finalPath.end(), grid[i]) != finalPath.end()) {
+				DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, fPathNode);
+			}
+		}
+		else {
+			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, regNode);
+		}
 	}
 }

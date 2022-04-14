@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <list>
 #include <math.h>
+#include <algorithm>
 
 #include "Node.h"
 #include "MathHandler.h"
@@ -33,6 +34,8 @@ public:
 	int TraverseGrid(int x, int y); //traverse grid to specific position in array
 
 	Vector2 AddVectors(Vector2 lhs, Vector2 rhs); //adds two specified vectors together
+
+	Node NodeFromWorldPosition(Vector2 nWorldPos);
 
 	void Draw();
 };

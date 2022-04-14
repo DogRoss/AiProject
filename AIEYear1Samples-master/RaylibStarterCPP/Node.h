@@ -20,5 +20,7 @@ public:
     int hCost;   //distance to goal from current node
 
     int FCost() { return gCost + hCost; };
+
+    bool operator ==(Node other);
 };
 
