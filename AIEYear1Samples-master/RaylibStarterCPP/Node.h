@@ -22,5 +22,6 @@ public:
     int FCost() { return gCost + hCost; };
 
     bool operator ==(Node other);
+    bool operator !=(Node other);
 };
 

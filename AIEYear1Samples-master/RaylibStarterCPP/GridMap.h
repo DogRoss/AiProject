@@ -35,7 +35,9 @@ public:
 
 	Vector2 AddVectors(Vector2 lhs, Vector2 rhs); //adds two specified vectors together
 
-	Node NodeFromWorldPosition(Vector2 nWorldPos);
+	Node NodeFromWorldPosition(Vector2 gWorldPos);
+
+	std::list<Node> GetNeighboringNodes(Node gNode);
 
 	void Draw();
 };

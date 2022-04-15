@@ -53,10 +53,10 @@ Vector2 GridMap::AddVectors(Vector2 lhs, Vector2 rhs)
 	return result;
 }
 
-Node GridMap::NodeFromWorldPosition(Vector2 nWorldPos) //grabs the node found at the specified world pos
+Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at the specified world pos
 {
-	float xPoint = ((nWorldPos.x + gridWorldSize.x / 2) / gridWorldSize.x);
-	float yPoint = ((nWorldPos.y + gridWorldSize.y / 2) / gridWorldSize.y);
+	float xPoint = ((gWorldPos.x + gridWorldSize.x / 2) / gridWorldSize.x);
+	float yPoint = ((gWorldPos.y + gridWorldSize.y / 2) / gridWorldSize.y);
 
 	float min = 0, float max = 0;
 	xPoint = std::clamp(xPoint, min, max);
@@ -66,6 +66,14 @@ Node GridMap::NodeFromWorldPosition(Vector2 nWorldPos) //grabs the node found at
 	int y = round((gridSizeY - 1) * yPoint);
 
 	return grid[TraverseGrid(x, y)];
+}
+
+std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
+{
+	std::list<Node> neighboringNodes;
+	int xCheck, int yCheck;
+
+	//right side
 }
 
 void GridMap::Draw()

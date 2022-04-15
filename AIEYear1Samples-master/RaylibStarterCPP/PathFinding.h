@@ -14,5 +14,8 @@ public:
 	void OnUpdate();
 
 	void FindPath(Vector2 pStartPos, Vector2 pTargetPos);
+
+	void GetFinalPath(Node pStartNode, Node pEndNode);
+
 };
 
