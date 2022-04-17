@@ -20,7 +20,7 @@ void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
 		std::list<Node>::iterator nIterator = openList.begin();
 		for (int i = 1; i < openList.size(); i++) {
 			advance(nIterator, i);
-			if ((*nIterator).FCost < currentNode.FCost || (*nIterator).FCost == currentNode.FCost && (*nIterator).hCost < currentNode.hCost) {
+			if ((*nIterator).FCost() < currentNode.FCost() || (*nIterator).FCost() == currentNode.FCost() && (*nIterator).hCost < currentNode.hCost) {
 				currentNode = (*nIterator);
 			}
 		}
@@ -31,7 +31,12 @@ void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
 			GetFinalPath(startNode, targetNode);
 		}
 
-		for(int i = 0; i < grid.GetNeighboringNodes(currentNode).size();)
+		std::list<Node>::iterator gIterator = grid.GetNeighboringNodes(currentNode).begin();
+		for (int i = 0; i < grid.GetNeighboringNodes(currentNode).size(); i++) {
+			advance(gIterator, i);
+			bool exists = 
+			if(std::find(closedList.begin(),closedList.end(),(*gIterator)))
+		}
 	}
 }
 

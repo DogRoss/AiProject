@@ -74,6 +74,46 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
 	int xCheck, int yCheck;
 
 	//right side
+	xCheck = gNode.gridX + 1;
+	yCheck = gNode.gridY;
+
+	if (xCheck >= 0 && xCheck < gridSizeX) {
+		if (yCheck >= 0 && yCheck < gridSizeY) {
+			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+		}
+	}
+
+	//left side
+	xCheck = gNode.gridX - 1;
+	yCheck = gNode.gridY;
+
+	if (xCheck >= 0 && xCheck < gridSizeX) {
+		if (yCheck >= 0 && yCheck < gridSizeY) {
+			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+		}
+	}
+
+	//top side
+	xCheck = gNode.gridX;
+	yCheck = gNode.gridY + 1;
+
+	if (xCheck >= 0 && xCheck < gridSizeX) {
+		if (yCheck >= 0 && yCheck < gridSizeY) {
+			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+		}
+	}
+
+	//bottom side
+	xCheck = gNode.gridX ;
+	yCheck = gNode.gridY - 1;
+
+	if (xCheck >= 0 && xCheck < gridSizeX) {
+		if (yCheck >= 0 && yCheck < gridSizeY) {
+			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+		}
+	}
+
+	return neighboringNodes;
 }
 
 void GridMap::Draw()
