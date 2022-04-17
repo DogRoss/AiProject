@@ -17,5 +17,7 @@ public:
 
 	void GetFinalPath(Node pStartNode, Node pEndNode);
 
+	int GetManhattenDistance(Node pNodeA, Node pNodeB);
+
 };
 
