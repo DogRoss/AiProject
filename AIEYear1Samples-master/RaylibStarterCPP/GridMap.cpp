@@ -92,9 +92,10 @@ Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at
 	return grid[TraverseGrid(x, y)];
 }
 
-std::vector<Node> GridMap::GetNeighboringNodes(Node* gNode, std::vector<Node> &neighborList)//TODO: unfinished
+std::vector<Node> GridMap::GetNeighboringNodes(Node* gNode)//TODO: unfinished
 {
-	neighborList.clear();
+	//std::vector<Node*> neighborlist = std::vector<Node*>();
+	std::vector<Node> neighborList;
 	int xCheck, yCheck;
 
 	//right side

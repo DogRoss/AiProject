@@ -38,9 +38,7 @@ void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
 		}
 
 
-		std::vector<Node> tempList;
-		grid->GetNeighboringNodes(currentNode, tempList);
-		for (Node node : grid->GetNeighboringNodes(currentNode, tempList)) {	//Loop through each neighbor of the current node
+		for (Node node : grid->GetNeighboringNodes(currentNode)) {	//Loop through each neighbor of the current node
 			//bool exists = (std::find(closedList.begin(), closedList.end(), node) == closedList.end());
 			if (ContainsNode(node, closedList)) {	//If the neighbor is a wall or has already been checked
 				continue;

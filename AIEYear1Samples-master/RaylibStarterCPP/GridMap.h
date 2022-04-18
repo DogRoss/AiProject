@@ -39,7 +39,7 @@ public:
 
 	Node NodeFromWorldPosition(Vector2 gWorldPos);
 
-	std::vector<Node> GetNeighboringNodes(Node* gNode, std::vector<Node> &neighborList);
+	std::vector<Node> GetNeighboringNodes(Node* gNode);
 
 	void Draw();
 
