@@ -58,7 +58,7 @@ Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at
 	float xPoint = ((gWorldPos.x + gridWorldSize.x / 2) / gridWorldSize.x);
 	float yPoint = ((gWorldPos.y + gridWorldSize.y / 2) / gridWorldSize.y);
 
-	float min = 0, float max = 0;
+	float min = 0, max = 0;
 	xPoint = std::clamp(xPoint, min, max);
 	yPoint = std::clamp(yPoint, min, max);
 
@@ -71,7 +71,7 @@ Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at
 std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
 {
 	std::list<Node> neighboringNodes;
-	int xCheck, int yCheck;
+	int xCheck, yCheck;
 
 	//right side
 	xCheck = gNode.gridX + 1;
