@@ -4,10 +4,10 @@
 class Node
 {
 public:
-    Node() : position(Vector2()), gridX(0), gridY(0) {};
+    Node() : position(Vector2()), gridX(0), gridY(0), finalPath(false) {};
 
     Node(Vector2 nPos, int nGridX, int nGridY) 
-        : position(nPos), gridX(nGridX), gridY(nGridY) {};
+        : position(nPos), gridX(nGridX), gridY(nGridY), finalPath(false) {};
 
     int gridX;   //position in node array
     int gridY;
@@ -16,10 +16,14 @@ public:
 
     Node* parent;     //stores previous node that agent came from
 
+    bool finalPath;
+
     int gCost;   //cost of moving to next square
     int hCost;   //distance to goal from current node
 
     int FCost() { return gCost + hCost; };
+
+    bool HasParent() { return parent != nullptr; };
 
     bool operator ==(Node other);
     bool operator !=(Node other);

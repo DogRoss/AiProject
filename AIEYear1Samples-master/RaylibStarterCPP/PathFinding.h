@@ -6,10 +6,11 @@
 class PathFinding
 {
 public:
-	GridMap grid;
+	GridMap* grid;
 	Vector2 startPos;
 	Vector2 targetPos;
 
+	PathFinding(Vector2 pStartPos, Vector2 pTargetPos, GridMap pGrid);
 
 	void OnUpdate();
 

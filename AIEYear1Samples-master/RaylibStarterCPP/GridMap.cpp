@@ -1,5 +1,24 @@
 #include "GridMap.h"
 
+GridMap::GridMap()
+{
+	Vector2 gPosition;
+	gPosition.x = 200, gPosition.y = 200;
+
+	Vector2 gWorldSize;
+	gWorldSize.x = 200, gWorldSize.y = 200;
+
+	gridPosition = gPosition; //sets position of grid in world space, and sets size of nodes
+	nodeRadius = 5;
+	nodeDiameter = nodeRadius * 2;
+
+	gridWorldSize = gWorldSize; //sets size of grid in world space
+	gridSizeX = round(gridWorldSize.x / nodeDiameter);
+	gridSizeY = round(gridWorldSize.y / nodeDiameter);
+
+	CreateGrid();
+}
+
 GridMap::GridMap(int nRadius, Vector2 gWorldSize, Vector2 gPosition)
 {
 	gridPosition = gPosition; //sets position of grid in world space, and sets size of nodes
@@ -122,10 +141,13 @@ void GridMap::Draw()
 	Color fPathNode = RED;
 	for (int i = 0; i < gridSizeX * gridSizeY; i++) {
 
-		if (!finalPath.empty()) {
+		/*if (!finalPath.empty()) {
 			if (std::find(finalPath.begin(), finalPath.end(), grid[i]) != finalPath.end()) {
 				DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, fPathNode);
 			}
+		}*/
+		if (grid[i].finalPath == true) {
+			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, fPathNode);
 		}
 		else {
 			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, regNode);

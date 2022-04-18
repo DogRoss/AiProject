@@ -14,6 +14,8 @@ class GridMap
 	*/
 
 public:
+	GridMap();
+
 	GridMap(int nRadius, Vector2 gWorldSize, Vector2 gPosition);
 	
 	Vector2 gridPosition;

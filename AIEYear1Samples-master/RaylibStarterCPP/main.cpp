@@ -20,7 +20,7 @@
 ********************************************************************************************/
 
 #include "raylib.h"
-#include "GridMap.h"
+#include "PathFinding.h"
 
 #define RAYGUI_IMPLEMENTATION
 #define RAYGUI_SUPPORT_ICONS
@@ -49,12 +49,21 @@ int main(int argc, char* argv[])
 
     GridMap grid = GridMap(10, gWorldSize, gPosition);
 
+
+    Vector2 startPos, targetPos;
+    startPos.x = 100, startPos.y = 100;
+    targetPos.x = 500, targetPos.y = 300;
+    PathFinding pathing = PathFinding(startPos, targetPos, grid);
+
+    pathing.OnUpdate();
+
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
+        //pathing.OnUpdate();
+        
         //----------------------------------------------------------------------------------
 
         // Draw
