@@ -10,7 +10,7 @@ public:
 	Vector2 startPos;
 	Vector2 targetPos;
 
-	PathFinding(Vector2 pStartPos, Vector2 pTargetPos, GridMap pGrid);
+	PathFinding(Vector2 pStartPos, Vector2 pTargetPos, GridMap* pGrid);
 
 	void OnUpdate();
 

@@ -4,10 +4,10 @@
 class Node
 {
 public:
-    Node() : position(Vector2()), gridX(0), gridY(0), finalPath(false) {};
+    Node() : position(Vector2()), gridX(0), gridY(0), finalPath(false), parent(nullptr) {};
 
     Node(Vector2 nPos, int nGridX, int nGridY) 
-        : position(nPos), gridX(nGridX), gridY(nGridY), finalPath(false) {};
+        : position(nPos), gridX(nGridX), gridY(nGridY), finalPath(false), parent(nullptr) {};
 
     int gridX;   //position in node array
     int gridY;
@@ -23,7 +23,7 @@ public:
 
     int FCost() { return gCost + hCost; };
 
-    bool HasParent() { return parent != nullptr; };
+    bool HasParent();
 
     bool operator ==(Node other);
     bool operator !=(Node other);

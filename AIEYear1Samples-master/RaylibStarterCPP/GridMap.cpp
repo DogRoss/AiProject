@@ -26,8 +26,11 @@ GridMap::GridMap(int nRadius, Vector2 gWorldSize, Vector2 gPosition)
 	nodeDiameter = nodeRadius * 2;
 
 	gridWorldSize = gWorldSize; //sets size of grid in world space
-	gridSizeX = round(gridWorldSize.x / nodeDiameter);
-	gridSizeY = round(gridWorldSize.y / nodeDiameter);
+	double xTemp = 0, yTemp = 0;
+
+	xTemp = round(gridWorldSize.x / nodeDiameter);
+	yTemp = round(gridWorldSize.y / nodeDiameter);
+	gridSizeX = (int)xTemp, gridSizeY = (int)yTemp;
 
 	CreateGrid();
 }
@@ -77,19 +80,21 @@ Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at
 	float xPoint = ((gWorldPos.x + gridWorldSize.x / 2) / gridWorldSize.x);
 	float yPoint = ((gWorldPos.y + gridWorldSize.y / 2) / gridWorldSize.y);
 
-	float min = 0, max = 0;
+	float min = 0, max = 1;
 	xPoint = std::clamp(xPoint, min, max);
 	yPoint = std::clamp(yPoint, min, max);
 
-	int x = round((gridSizeX - 1) * xPoint);
-	int y = round((gridSizeY - 1) * yPoint);
+	double xTemp, yTemp;
+	xTemp = round((gridSizeX - 1) * xPoint), yTemp = round((gridSizeY - 1) * yPoint);
+	int x = (int)xTemp;
+	int y = (int)yTemp;
 
 	return grid[TraverseGrid(x, y)];
 }
 
-std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
+std::list<Node> GridMap::GetNeighboringNodes(Node gNode, std::list<Node> &neighborList)//TODO: unfinished
 {
-	std::list<Node> neighboringNodes;
+	neighborList.clear();
 	int xCheck, yCheck;
 
 	//right side
@@ -98,7 +103,7 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
-			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+			neighborList.push_back(grid[TraverseGrid(xCheck, yCheck)]);
 		}
 	}
 
@@ -108,7 +113,7 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
-			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+			neighborList.push_back(grid[TraverseGrid(xCheck, yCheck)]);
 		}
 	}
 
@@ -118,7 +123,7 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
-			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+			neighborList.push_back(grid[TraverseGrid(xCheck, yCheck)]);
 		}
 	}
 
@@ -128,11 +133,12 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode)//TODO: unfinished
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
-			neighboringNodes.push_back(grid[TraverseGrid(xCheck, yCheck)]);
+			neighborList.push_back(grid[TraverseGrid(xCheck, yCheck)]);
 		}
 	}
 
-	return neighboringNodes;
+
+	return neighborList;
 }
 
 void GridMap::Draw()
@@ -141,16 +147,16 @@ void GridMap::Draw()
 	Color fPathNode = RED;
 	for (int i = 0; i < gridSizeX * gridSizeY; i++) {
 
-		/*if (!finalPath.empty()) {
+		if (!finalPath.empty()) {
 			if (std::find(finalPath.begin(), finalPath.end(), grid[i]) != finalPath.end()) {
-				DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, fPathNode);
+				DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, RED);
 			}
-		}*/
-		if (grid[i].finalPath == true) {
-			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, fPathNode);
 		}
+		/*if (grid[i].finalPath == true) {
+			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeDiameter, nodeDiameter, RED);
+		}*/
 		else {
-			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, regNode);
+			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeDiameter, nodeDiameter, BLACK);
 		}
 	}
 }

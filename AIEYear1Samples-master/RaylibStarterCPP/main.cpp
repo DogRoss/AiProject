@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     gWorldSize.x = screenWidth, gWorldSize.y = screenHeight;
     gPosition.x = screenWidth / 2, gPosition.y = screenHeight / 2;
 
-    GridMap grid = GridMap(10, gWorldSize, gPosition);
+    GridMap* grid = new GridMap(10, gWorldSize, gPosition);
 
 
     Vector2 startPos, targetPos;
@@ -55,14 +55,13 @@ int main(int argc, char* argv[])
     targetPos.x = 500, targetPos.y = 300;
     PathFinding pathing = PathFinding(startPos, targetPos, grid);
 
-    pathing.OnUpdate();
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        //pathing.OnUpdate();
+        pathing.OnUpdate();
         
         //----------------------------------------------------------------------------------
 
@@ -74,7 +73,10 @@ int main(int argc, char* argv[])
 
         DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
-        grid.Draw();
+        grid->Draw();
+
+        DrawRectangle(startPos.x, startPos.y, 20, 20, GREEN);
+        DrawRectangle(targetPos.x, targetPos.y, 20, 20, GREEN);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
