@@ -4,7 +4,6 @@
 #include <algorithm>
 
 #include "Node.h"
-#include "MathHandler.h"
 
 #pragma once
 class GridMap
@@ -40,5 +39,6 @@ public:
 	std::list<Node> GetNeighboringNodes(Node gNode);
 
 	void Draw();
+
 };
 

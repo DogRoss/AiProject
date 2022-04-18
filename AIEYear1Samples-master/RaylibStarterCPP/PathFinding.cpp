@@ -2,7 +2,7 @@
 
 void PathFinding::OnUpdate()
 {
-	FindPath(startPos, targetPos);
+	//FindPath(startPos, targetPos);
 }
 
 void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
@@ -11,21 +11,23 @@ void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
 	Node targetNode = grid.NodeFromWorldPosition(pTargetPos);
 
 	std::list<Node> openList; //list of nodes being checked
-	std::unordered_set<Node> closedList; //list of nodes that were checked
+	std::list <Node> closedList; //list of nodes that were checked
 
 	openList.push_back(startNode);
 
 	while (!openList.empty()) {
 		Node currentNode = openList.front();
+		std::list<Node>::iterator nIterator = openList.begin();
 		for (int i = 1; i < openList.size(); i++) {
-			std::list<Node>::iterator nIterator = openList.begin();
+			nIterator = openList.begin();
 			advance(nIterator, i);
 			if ((*nIterator).FCost() < currentNode.FCost() || (*nIterator).FCost() == currentNode.FCost() && (*nIterator).hCost < currentNode.hCost) {
 				currentNode = (*nIterator);
 			}
 		}
-		openList.remove(currentNode);
-		closedList.insert(currentNode);
+		//openList.remove(currentNode); //TODO: ERROR
+		openList.erase(nIterator);
+		closedList.push_back(currentNode);
 
 		if (currentNode == targetNode) {
 			GetFinalPath(startNode, targetNode);
@@ -39,12 +41,12 @@ void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
 				continue;
 			}
 			int moveCost = currentNode.gCost + GetManhattenDistance(currentNode, (*gIterator));
-
+		
 			if (moveCost < (*gIterator).gCost || !exists) {
 				(*gIterator).gCost = moveCost;
 				(*gIterator).gCost = GetManhattenDistance((*gIterator), targetNode);
 				(*gIterator).parent = &currentNode;
-
+		
 				if (!exists) {
 					openList.push_back((*gIterator));
 				}
@@ -75,3 +77,4 @@ int PathFinding::GetManhattenDistance(Node pNodeA, Node pNodeB)
 
 	return x + y;
 }
+ 
