@@ -92,14 +92,14 @@ Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at
 	return grid[TraverseGrid(x, y)];
 }
 
-std::list<Node> GridMap::GetNeighboringNodes(Node gNode, std::list<Node> &neighborList)//TODO: unfinished
+std::vector<Node> GridMap::GetNeighboringNodes(Node* gNode, std::vector<Node> &neighborList)//TODO: unfinished
 {
 	neighborList.clear();
 	int xCheck, yCheck;
 
 	//right side
-	xCheck = gNode.gridX + 1;
-	yCheck = gNode.gridY;
+	xCheck = gNode->gridX + 1;
+	yCheck = gNode->gridY;
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
@@ -108,8 +108,8 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode, std::list<Node> &neighb
 	}
 
 	//left side
-	xCheck = gNode.gridX - 1;
-	yCheck = gNode.gridY;
+	xCheck = gNode->gridX - 1;
+	yCheck = gNode->gridY;
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
@@ -118,8 +118,8 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode, std::list<Node> &neighb
 	}
 
 	//top side
-	xCheck = gNode.gridX;
-	yCheck = gNode.gridY + 1;
+	xCheck = gNode->gridX;
+	yCheck = gNode->gridY + 1;
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
@@ -128,8 +128,8 @@ std::list<Node> GridMap::GetNeighboringNodes(Node gNode, std::list<Node> &neighb
 	}
 
 	//bottom side
-	xCheck = gNode.gridX ;
-	yCheck = gNode.gridY - 1;
+	xCheck = gNode->gridX ;
+	yCheck = gNode->gridY - 1;
 
 	if (xCheck >= 0 && xCheck < gridSizeX) {
 		if (yCheck >= 0 && yCheck < gridSizeY) {
@@ -147,14 +147,14 @@ void GridMap::Draw()
 	Color fPathNode = RED;
 	for (int i = 0; i < gridSizeX * gridSizeY; i++) {
 
-		if (!finalPath.empty()) {
-			if (std::find(finalPath.begin(), finalPath.end(), grid[i]) != finalPath.end()) {
-				DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, RED);
-			}
-		}
-		/*if (grid[i].finalPath == true) {
+		//if (!finalPath.empty()) {
+		//	if (std::find(finalPath.begin(), finalPath.end(), grid[i]) != finalPath.end()) {
+		//		DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeRadius, nodeRadius, RED);
+		//	}
+		//}
+		if (grid[i].finalPath == true) {
 			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeDiameter, nodeDiameter, RED);
-		}*/
+		}
 		else {
 			DrawRectangle(grid[i].position.x - nodeRadius, grid[i].position.y - nodeRadius, nodeDiameter, nodeDiameter, BLACK);
 		}

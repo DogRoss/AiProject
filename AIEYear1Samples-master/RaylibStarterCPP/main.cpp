@@ -75,8 +75,8 @@ int main(int argc, char* argv[])
 
         grid->Draw();
 
-        DrawRectangle(startPos.x, startPos.y, 20, 20, GREEN);
-        DrawRectangle(targetPos.x, targetPos.y, 20, 20, GREEN);
+        /*DrawRectangle(startPos.x, startPos.y, 20, 20, GREEN);
+        DrawRectangle(targetPos.x, targetPos.y, 20, 20, GREEN);*/
 
         EndDrawing();
         //----------------------------------------------------------------------------------

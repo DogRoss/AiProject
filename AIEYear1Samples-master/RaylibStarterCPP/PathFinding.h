@@ -16,9 +16,11 @@ public:
 
 	void FindPath(Vector2 pStartPos, Vector2 pTargetPos);
 
-	void GetFinalPath(Node pStartNode, Node pEndNode);
+	void GetFinalPath(Node* pStartNode, Node* pEndNode);
 
-	int GetManhattenDistance(Node pNodeA, Node pNodeB);
+	int GetManhattenDistance(Node* pNodeA, Node* pNodeB);
+
+	bool ContainsNode(Node pNode, std::vector<Node*> nodeList);
 
 };
 

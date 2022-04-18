@@ -2,6 +2,7 @@
 #include <list>
 #include <math.h>
 #include <algorithm>
+#include <vector>
 
 #include "Node.h"
 
@@ -24,7 +25,7 @@ public:
 	float distance; //distance between each node;
 
 	Node* grid; //1D array, use as if a 2D array
-	std::list<Node> finalPath; //path of nodes in which the agent will follow
+	std::list<Node*> finalPath; //path of nodes in which the agent will follow
 
 	float nodeDiameter; //stores diameter of nodes, is double the nodeRadius
 	int gridSizeX, gridSizeY; //Node grid array size
@@ -38,7 +39,7 @@ public:
 
 	Node NodeFromWorldPosition(Vector2 gWorldPos);
 
-	std::list<Node> GetNeighboringNodes(Node gNode, std::list<Node> &neighborList);
+	std::vector<Node> GetNeighboringNodes(Node* gNode, std::vector<Node> &neighborList);
 
 	void Draw();
 
