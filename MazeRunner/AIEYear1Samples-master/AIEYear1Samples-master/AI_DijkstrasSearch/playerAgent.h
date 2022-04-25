@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "pathfinding.h"
 #include <vector>
+#include <iostream>
 
 namespace pathfinding
 {

@@ -9,13 +9,54 @@ bool pathfinding::MazeRunner::PlayerDetection()
     return false;
 }
 
-void pathfinding::MazeRunner::SetNode(Node* node, Node* nodeTarget, Node* nodeStart, playerAgent* agent)
+void pathfinding::MazeRunner::AddPosition(Node* node)
+{
+    storedPositions.push_back(node);
+}
+
+void pathfinding::MazeRunner::ChangeTargetNode() {
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 gen(rd()); // seed the generator
+    std::uniform_int_distribution<> distr(0, storedPositions.size() - 1); // define the range
+
+    int num = distr(gen);
+
+    if (num == currentIndex) {
+        if (num == storedPositions.size() - 1) {
+            num--;
+        }
+        else if (num == 0) {
+            num++;
+        }
+        else {
+            num++;
+        }
+    }
+    currentIndex = num;
+    
+    targetNode = storedPositions[num];
+}
+
+bool pathfinding::MazeRunner::AtTarget()
+{
+    if (nMap->GetClosestNode(position) == targetNode)
+        return true;
+    else
+        return false;
+}
+
+void pathfinding::MazeRunner::SetNode(Node* node, Node* nodeTarget, Node* nodeStart, playerAgent* agent, NodeMap* nodeMap)
 {
     targetNode = nodeTarget;
     startNode = nodeStart;
     player = agent;
 	currentNode = node;
 	position = node->position;
+    nMap = nodeMap;
+
+    runnerColor = YELLOW;
+
+    AddPosition(nodeTarget);
 
     GoToNode(targetNode);
 }
@@ -30,12 +71,18 @@ void pathfinding::MazeRunner::Update(float deltaTime)
         GoToNode(targetNode);
     }
     else {
+        runnerColor = WHITE;
         GoToNode(startNode);
         if (abs(position.x - startNode->position.x) < 5 && abs(position.y - startNode->position.y) < 5) {
+            runnerColor = YELLOW;
+            ChangeTargetNode();
             seen = false;
         }
     }
-
+    
+    if (AtTarget()) {
+        ChangeTargetNode();
+    }
 
     // find out how far we have to go to the next node
     float dx = currentNode->position.x - position.x;
@@ -95,5 +142,6 @@ void pathfinding::MazeRunner::GoToNode(Node* node)
 
 void pathfinding::MazeRunner::Draw()
 {
-    DrawCircle(position.x, position.y, 8, { 255,255,0,255 });
+    DrawCircle(position.x, position.y, 8, runnerColor);
+    DrawCircle(targetNode->position.x, targetNode->position.y, 8, RED);
 }

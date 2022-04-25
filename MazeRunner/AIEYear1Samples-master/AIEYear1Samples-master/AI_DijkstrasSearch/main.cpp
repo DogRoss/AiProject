@@ -88,11 +88,20 @@ int main(int argc, char* argv[])
 
 	playerAgent pAgent;
 	pAgent.SetNode(playerStart);
-	pAgent.speed = 50;
+	pAgent.speed = 200;
 
 	MazeRunner runner;
-	runner.SetNode(start, end, start, &pAgent);
-	runner.speed = 50;
+	runner.SetNode(start, end, start, &pAgent, &nodeMap);
+	runner.speed = 100;
+
+	//position goals for runner
+	Vector2 vec1, vec2, vec3;
+	vec1.x = 300, vec1.y = 50;
+	vec2.x = 115, vec2.y = 50;
+	vec3.x = 75, vec3.y = 210;
+	runner.AddPosition(nodeMap.GetClosestNode(vec1));
+	runner.AddPosition(nodeMap.GetClosestNode(vec2));
+	runner.AddPosition(nodeMap.GetClosestNode(vec3));
 
     float time = (float)GetTime();
     float deltaTime;
@@ -124,7 +133,7 @@ int main(int argc, char* argv[])
 		pAgent.Update(deltaTime);
 		pAgent.Draw();
 
-		
+		DrawCircle(75, 210, 5, GREEN);
 
         EndDrawing();
 		//----------------------------------------------------------------------------------
