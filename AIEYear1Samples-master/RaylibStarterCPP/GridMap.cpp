@@ -75,7 +75,7 @@ Vector2 GridMap::AddVectors(Vector2 lhs, Vector2 rhs)
 	return result;
 }
 
-Node GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at the specified world pos
+Node& GridMap::NodeFromWorldPosition(Vector2 gWorldPos) //grabs the node found at the specified world pos
 {
 	float xPoint = ((gWorldPos.x + gridWorldSize.x / 2) / gridWorldSize.x);
 	float yPoint = ((gWorldPos.y + gridWorldSize.y / 2) / gridWorldSize.y);

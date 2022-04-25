@@ -25,7 +25,10 @@ public:
 
     bool HasParent();
 
-    bool operator ==(Node other);
-    bool operator !=(Node other);
+    bool operator ==(Node other) const;
+    bool operator ==(Node* other) const;
+    bool operator ==(Node& other) const;
+    bool operator ==(const Node& other) const;
+    bool operator !=(Node other) const;
 };
 

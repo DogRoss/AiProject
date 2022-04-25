@@ -1,5 +1,11 @@
 #include "PathFinding.h"
 
+//Use this function to sort nodes using their gScore value
+bool NodeSort(const Node* i, const Node* j)
+{
+	return (i->gCost< j->gCost);
+}
+
 PathFinding::PathFinding(Vector2 pStartPos, Vector2 pTargetPos, GridMap* pGrid)
 {
 	grid = pGrid;
@@ -9,53 +15,94 @@ PathFinding::PathFinding(Vector2 pStartPos, Vector2 pTargetPos, GridMap* pGrid)
 
 void PathFinding::OnUpdate()
 {
-	FindPath(startPos, targetPos);
+	Node* startNode;
+	Node* endNode;
+	startNode = &grid->NodeFromWorldPosition(startPos);
+	endNode = &grid->NodeFromWorldPosition(targetPos);
+	FindPath(startNode, endNode);
 }
 
-void PathFinding::FindPath(Vector2 pStartPos, Vector2 pTargetPos)
+void PathFinding::FindPath(Node* startNode, Node* endNode)
 {
-	Node* startNode = &grid->NodeFromWorldPosition(pStartPos);
-	Node* targetNode = &grid->NodeFromWorldPosition(pTargetPos);
+	//Validate the input
+	if (startNode == nullptr || endNode == nullptr)
+	{
+		return;
+	}
 
-	std::vector<Node*> openList; //list of nodes being checked
-	std::vector<Node*> closedList; //list of nodes that were checked
+	if (startNode == endNode)
+	{
+		return GetFinalPath(startNode, endNode);
+	}
 
+
+	//Initialize the starting node
+	startNode->gCost = 0;
+	startNode->parent = nullptr;
+
+	//Create our temporary lists for storing nodes
+	std::vector<Node*> openList;
+	std::vector<Node*> closedList;
+
+	//Add the starting node to openList
 	openList.push_back(startNode);
 
-	while (!openList.empty()) {
-		Node* currentNode = openList[0];//Create a node and set it to the first item in the open list
-		for (int i = 1; i < openList.size(); i++) {//Loop through the open list starting from the second object
+	while (!openList.empty())
+	{
+		//Sort openList based on gScore using the function created above
+		std::sort(openList.begin(), openList.end(), NodeSort);
 
-			if (openList[i]->FCost() < currentNode->FCost() || openList[i]->FCost() == currentNode->FCost() && openList[i]->hCost < currentNode->hCost) {//If the f cost of that object is less than or equal to the f cost of the current node
-				currentNode = openList[i];//Set the current node to that object
-			}
+		//Set the current node to the first node in the openList
+		Node* currentNode = new Node();
+		currentNode = openList.front();
+		//Remove currentNode from openList
+		openList.erase(openList.begin());
+		//Add currentNode to closedList
+		closedList.push_back(currentNode);
+
+		//If the destination node was added to the closed list,
+		//the shortest path has been found
+		if (currentNode == endNode)
+		{
+			break;
 		}
-		openList.erase(openList.begin());	//Remove that from the open list
-		closedList.push_back(currentNode);	//And add it to the closed list
 
-		if (currentNode == targetNode) {	//If the current node is the same as the target node
-			GetFinalPath(startNode, targetNode);	//Calculate the final path
-		}
-
-
-		for (Node node : grid->GetNeighboringNodes(currentNode)) {	//Loop through each neighbor of the current node
-			//bool exists = (std::find(closedList.begin(), closedList.end(), node) == closedList.end());
-			if (ContainsNode(node, closedList)) {	//If the neighbor is a wall or has already been checked
+		//For each Edge e in currentNode's connections
+		for (Node e : grid->GetNeighboringNodes(currentNode))
+		{
+			//If the target node is in the closedList, ignore it
+			if (std::find(closedList.begin(), closedList.end(), e) != closedList.end()) {
 				continue;
 			}
-			int moveCost = currentNode->gCost + GetManhattenDistance(currentNode, &node);	//Get the F cost of that neighbor
-		
-			if (moveCost < node.gCost || ContainsNode(node, closedList)) {//If the f cost is greater than the g cost or it is not in the open list
-				node.gCost = moveCost;//Set the g cost to the f cost
-				node.gCost = GetManhattenDistance(&node, targetNode);//Set the h cost
-				node.parent = currentNode;//Set the parent of the node for retracing steps
-		
-				if (ContainsNode(node, closedList)) {//If the neighbor is not in the openlist
-					openList.insert(openList.begin(), &node);//Add it to the list
+			//If the target node is not in the openList, update it
+			if (std::find(openList.begin(), openList.end(), e) == openList.end()) {
+				//Calculate the target node's G Score
+				e.gCost = currentNode->gCost + e.gCost;
+				//Set the target node's previous to currentNode
+				e.parent = currentNode;
+				//Find the earliest point we should insert the node
+				//to the list to keep it sorted
+				auto insertionPos = openList.end();
+				for (auto i = openList.begin(); i != openList.end(); i++) {
+					if (e.gCost < (*i)->gCost) {
+						insertionPos = i;
+						break;
+					}
+				}
+				//Insert the node at the appropriate position
+				openList.insert(insertionPos, &e);
+			}
+			//Otherwise the target node IS in the open list
+			else {
+				//Compare the new G Score to the old one before updating
+				if (currentNode->gCost + e.gCost < e.gCost) {
+					//Calculate the target node's G Score
+					e.gCost = currentNode->gCost + e.gCost;
+					//Set the target node's previous to currentNode
+					e.parent = currentNode;
 				}
 			}
 		}
-
 	}
 }
 
@@ -97,4 +144,12 @@ bool PathFinding::ContainsNode(Node pNode, std::vector<Node*> nodeList)
 	}
 	return result;
 }
+
+//bool PathFinding::NodeSort(Node* first, Node* second)
+//{
+//	return (first->gCost < second->gCost);
+//
+//	
+//}
+
  
