@@ -102,6 +102,8 @@ int main(int argc, char* argv[])
 	runner.AddPosition(nodeMap.GetClosestNode(vec1));
 	runner.AddPosition(nodeMap.GetClosestNode(vec2));
 	runner.AddPosition(nodeMap.GetClosestNode(vec3));
+	runner.AddPosition(start);
+	runner.AddPosition(end);
 
     float time = (float)GetTime();
     float deltaTime;
@@ -114,6 +116,9 @@ int main(int argc, char* argv[])
 		// Update
 		//----------------------------------------------------------------------------------
 		// TODO: Update your variables here
+		runner.Update(deltaTime);
+		pAgent.Update(deltaTime);
+
 		//----------------------------------------------------------------------------------
 
 		// Draw
@@ -125,15 +130,11 @@ int main(int argc, char* argv[])
         bool drawNodeMap = true;
 
         nodeMap.Draw(true);
-        //DrawPath(agent.path, lineColor);
+        DrawPath(runner.path, lineColor);
 
-        runner.Update(deltaTime);
         runner.Draw();
 
-		pAgent.Update(deltaTime);
 		pAgent.Draw();
-
-		DrawCircle(75, 210, 5, GREEN);
 
         EndDrawing();
 		//----------------------------------------------------------------------------------

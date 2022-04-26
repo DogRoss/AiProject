@@ -7,7 +7,7 @@ namespace pathfinding
 	//Use this function to sort nodes using their gScore value
 	bool NodeSort(Node* i, Node* j) 
 	{ 
-		return (i->gScore < j->gScore); 
+		return (i->fScore < j->fScore); 
 	}
 
 	void Node::ConnectTo(Node* other, float cost)
@@ -47,6 +47,25 @@ namespace pathfinding
 		return nullptr;
 	}
 
+	int Node::CalculateHeuristic(Node* other)
+	{
+		hScore = 0;
+
+		//hScore = sqrt(pow(position.x - position.y) + pow(other->position.x - other->position.y));
+		hScore = hypot((position.x - position.y), (other->position.x - other->position.y));
+		//std::cout << hScore << +" hCost" << std::endl;
+		return hScore;
+	}
+
+	int Node::CalculateFScore(Node* other)
+	{
+		hScore = CalculateHeuristic(other);
+		fScore = hScore + gScore;
+		return fScore;
+	}
+
+	
+
 	std::vector<Node*> DijkstrasSearch(Node* startNode, Node* endNode)
 	{
 		//Validate the input
@@ -76,71 +95,44 @@ namespace pathfinding
 
 		while (!openList.empty())
 		{
-			//Sort openList based on gScore using the function created above
 			std::sort(openList.begin(), openList.end(), NodeSort);
 
-			//Set the current node to the first node in the openList
-			Node* currentNode = openList.front();
-			//Remove currentNode from openList
-			openList.erase(openList.begin());
-			//Add currentNode to closedList
-			closedList.push_back(currentNode);
+			auto current_it = openList.begin();
+			Node* current = *current_it;
 
-			//If the destination node was added to the closed list,
-			//the shortest path has been found
-			if (currentNode == endNode)
-			{
+			if (current == endNode) {
 				break;
 			}
 
-			//For each Edge e in currentNode's connections
-			for (Edge e : currentNode->connections)
-			{
-				//If the target node is in the closedList, ignore it
-				if (std::find(closedList.begin(), closedList.end(), e.target) != closedList.end()) {
-					continue;
-				}
-				//If the target node is not in the openList, update it
-				if (std::find(openList.begin(), openList.end(), e.target) == openList.end()) {
-					//Calculate the target node's G Score
-					e.target->gScore = currentNode->gScore + e.cost;
-					//Set the target node's previous to currentNode
-					e.target->previous = currentNode;
-					//Find the earliest point we should insert the node
-					//to the list to keep it sorted
-					auto insertionPos = openList.end();
-					for (auto i = openList.begin(); i != openList.end(); i++) {
-						if (e.target->gScore < (*i)->gScore) {
-							insertionPos = i;
-							break;
-						}
+			closedList.push_back(current);
+			openList.erase(current_it);
+
+			for (Edge e : current->connections) {
+				if (!std::count(closedList.begin(), closedList.end(), e.target)) {
+					e.target->gScore = current->gScore + e.cost;
+					e.target->hScore = e.target->CalculateHeuristic(endNode);
+					e.target->fScore = e.target->gScore + e.target->hScore;
+
+					if (!std::count(openList.begin(), openList.end(), e.target)) {
+						e.target->gScore = current->gScore; //error might be thrown here, replace rhs with currentNode scores
+						e.target->fScore = current->fScore; 
+						e.target->previous = current;
+						openList.push_back(e.target);
 					}
-					//Insert the node at the appropriate position
-					openList.insert(insertionPos, e.target);
-				}
-				//Otherwise the target node IS in the open list
-				else {
-					//Compare the new G Score to the old one before updating
-					if (currentNode->gScore + e.cost < e.target->gScore) {
-						//Calculate the target node's G Score
-						e.target->gScore = currentNode->gScore + e.cost;
-						//Set the target node's previous to currentNode
-						e.target->previous = currentNode;
+					else if (e.target->previous->fScore < e.target->fScore) {
+						e.target->gScore = current->gScore; //error might be thrown here, replace rhs with currentNode scores
+						e.target->fScore = current->fScore;
+						e.target->previous = current;
 					}
 				}
 			}
 		}
 
-		//Create path in reverse from endNode to startNode
 		std::vector<Node*> path;
-		Node* currentNode = endNode;
-
-		while (currentNode != nullptr)
-		{
-			//Add the current node to the beginning of the path
-			path.insert(path.begin(), currentNode);
-			//Go to the previous node
-			currentNode = currentNode->previous;
+		Node* current = endNode;
+		while (current) {
+			path.insert(path.begin(), current);
+			current = current->previous;
 		}
 
 		return path;

@@ -1,5 +1,6 @@
 #include "MazeRunner.h"
 
+//checks to see if contact has been made with the player
 bool pathfinding::MazeRunner::PlayerDetection()
 {
     if (abs(position.x - player->position.x) < 5 && abs(position.y - player->position.y) < 5) {
@@ -9,18 +10,18 @@ bool pathfinding::MazeRunner::PlayerDetection()
     return false;
 }
 
+//adds a position for the AI to pursue
 void pathfinding::MazeRunner::AddPosition(Node* node)
 {
     storedPositions.push_back(node);
 }
 
+//changes to a random target from the target list for the AI to pursue
 void pathfinding::MazeRunner::ChangeTargetNode() {
     std::random_device rd; // obtain a random number from hardware
     std::mt19937 gen(rd()); // seed the generator
     std::uniform_int_distribution<> distr(0, storedPositions.size() - 1); // define the range
-
     int num = distr(gen);
-
     if (num == currentIndex) {
         if (num == storedPositions.size() - 1) {
             num--;
@@ -32,11 +33,13 @@ void pathfinding::MazeRunner::ChangeTargetNode() {
             num++;
         }
     }
-    currentIndex = num;
     
+    currentIndex = num;
+
     targetNode = storedPositions[num];
 }
 
+//determines if the AI has reached its target
 bool pathfinding::MazeRunner::AtTarget()
 {
     if (nMap->GetClosestNode(position) == targetNode)
@@ -45,7 +48,8 @@ bool pathfinding::MazeRunner::AtTarget()
         return false;
 }
 
-void pathfinding::MazeRunner::SetNode(Node* node, Node* nodeTarget, Node* nodeStart, playerAgent* agent, NodeMap* nodeMap)
+//sets all required nodes for operating the AI
+void pathfinding::MazeRunner::SetNode(Node* node, Node* nodeTarget, Node* nodeStart, playerAgent* agent, NodeMap* nodeMap) 
 {
     targetNode = nodeTarget;
     startNode = nodeStart;
@@ -65,7 +69,10 @@ void pathfinding::MazeRunner::SetNode(Node* node, Node* nodeTarget, Node* nodeSt
 
 void pathfinding::MazeRunner::Update(float deltaTime)
 {
-    if (path.empty()) return;
+    if (path.empty()) {
+        GoToNode(startNode);
+        return;
+    }
 
     if (!PlayerDetection() && !seen) {
         GoToNode(targetNode);
@@ -75,7 +82,6 @@ void pathfinding::MazeRunner::Update(float deltaTime)
         GoToNode(startNode);
         if (abs(position.x - startNode->position.x) < 5 && abs(position.y - startNode->position.y) < 5) {
             runnerColor = YELLOW;
-            ChangeTargetNode();
             seen = false;
         }
     }

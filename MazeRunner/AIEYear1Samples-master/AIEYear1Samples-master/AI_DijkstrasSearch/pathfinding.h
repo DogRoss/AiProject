@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 namespace pathfinding {
 	struct Node;
@@ -22,12 +23,16 @@ namespace pathfinding {
 		Vector2 position;
 
 		float gScore;
+		float hScore;
+		float fScore;
 		Node* previous;
 
 		std::vector<Edge> connections;
 
 		void ConnectTo(Node* other, float cost);
 		Node* FindNeighborNode(int direction);
+		int CalculateHeuristic(Node* other);
+		int CalculateFScore(Node* other);
 	};
 
 	std::vector<Node*> DijkstrasSearch(Node* startNode, Node* endNode);
