@@ -69,23 +69,27 @@ void pathfinding::MazeRunner::SetNode(Node* node, Node* nodeTarget, Node* nodeSt
 
 void pathfinding::MazeRunner::Update(float deltaTime)
 {
+    //if there isnt any path, return after setting node path to start
     if (path.empty()) {
         GoToNode(startNode);
         return;
     }
 
+    //if seen by player, go to start, otherwise, go to target
     if (!PlayerDetection() && !seen) {
         GoToNode(targetNode);
     }
     else {
         runnerColor = WHITE;
         GoToNode(startNode);
+        //if seen but are at start, go back to normal routine
         if (abs(position.x - startNode->position.x) < 5 && abs(position.y - startNode->position.y) < 5) {
             runnerColor = YELLOW;
             seen = false;
         }
     }
     
+    //changes target after reaching first target
     if (AtTarget()) {
         ChangeTargetNode();
     }
@@ -140,9 +144,10 @@ void pathfinding::MazeRunner::Update(float deltaTime)
     }
 }
 
+//generates path for node;
 void pathfinding::MazeRunner::GoToNode(Node* node)
 {
-    path = DijkstrasSearch(currentNode, node);
+    path = AStar(currentNode, node);
     currentIndex = 0;
 }
 

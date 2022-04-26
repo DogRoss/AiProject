@@ -10,14 +10,16 @@ namespace pathfinding
 		return (i->fScore < j->fScore); 
 	}
 
+	//connects edges
 	void Node::ConnectTo(Node* other, float cost)
 	{
 		connections.push_back(Edge(other, cost));
 	}
 
+	//checks node in selected direction by int
 	Node* Node::FindNeighborNode(int direction)
 	{
-		for (Edge e : connections) {
+		for (Edge e : connections) { 
 			switch (direction) {
 			case 0:
 				if (e.target->position.y < position.y) {
@@ -65,8 +67,8 @@ namespace pathfinding
 	}
 
 	
-
-	std::vector<Node*> DijkstrasSearch(Node* startNode, Node* endNode)
+	//pathing algorithm to find efficient path towards goal using node lists
+	std::vector<Node*> AStar(Node* startNode, Node* endNode)
 	{
 		//Validate the input
 		if (startNode == nullptr || endNode == nullptr)
@@ -97,30 +99,31 @@ namespace pathfinding
 		{
 			std::sort(openList.begin(), openList.end(), NodeSort);
 
-			auto current_it = openList.begin();
+			auto current_it = openList.begin(); //sets up iterator
 			Node* current = *current_it;
 
-			if (current == endNode) {
+			if (current == endNode) {//if path is found
 				break;
 			}
 
-			closedList.push_back(current);
+			closedList.push_back(current); //puts checked node into closed list
 			openList.erase(current_it);
 
+			//checks all connections to node through edges and finds best path
 			for (Edge e : current->connections) {
 				if (!std::count(closedList.begin(), closedList.end(), e.target)) {
 					e.target->gScore = current->gScore + e.cost;
 					e.target->hScore = e.target->CalculateHeuristic(endNode);
 					e.target->fScore = e.target->gScore + e.target->hScore;
 
-					if (!std::count(openList.begin(), openList.end(), e.target)) {
-						e.target->gScore = current->gScore; //error might be thrown here, replace rhs with currentNode scores
+					if (!std::count(openList.begin(), openList.end(), e.target)) { //havent visited node, calculate and update
+						e.target->gScore = current->gScore; 
 						e.target->fScore = current->fScore; 
 						e.target->previous = current;
 						openList.push_back(e.target);
 					}
-					else if (e.target->previous->fScore < e.target->fScore) {
-						e.target->gScore = current->gScore; //error might be thrown here, replace rhs with currentNode scores
+					else if (e.target->previous->fScore < e.target->fScore) { //already has been visited and calculated, compare with current to find shorter path
+						e.target->gScore = current->gScore; 
 						e.target->fScore = current->fScore;
 						e.target->previous = current;
 					}
@@ -128,9 +131,10 @@ namespace pathfinding
 			}
 		}
 
+		//reverses final path
 		std::vector<Node*> path;
 		Node* current = endNode;
-		while (current) {
+		while (current) {	
 			path.insert(path.begin(), current);
 			current = current->previous;
 		}

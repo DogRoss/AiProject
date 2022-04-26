@@ -170,14 +170,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MazeRunner.cpp" />
     <ClCompile Include="NodeMap.cpp" />
-    <ClCompile Include="PathAgent.cpp" />
     <ClCompile Include="pathfinding.cpp" />
     <ClCompile Include="playerAgent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MazeRunner.h" />
     <ClInclude Include="NodeMap.h" />
-    <ClInclude Include="PathAgent.h" />
     <ClInclude Include="pathfinding.h" />
     <ClInclude Include="playerAgent.h" />
   </ItemGroup>

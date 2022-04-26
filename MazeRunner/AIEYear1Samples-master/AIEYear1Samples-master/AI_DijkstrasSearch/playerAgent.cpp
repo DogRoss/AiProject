@@ -12,7 +12,7 @@ void pathfinding::playerAgent::Update(float deltaTime)
 {
     if (currentNode == nullptr) return;
     
-
+    //INPUT
     if (IsKeyDown(87) && currentNode->FindNeighborNode(0)) { //W
         if (abs(position.x - currentNode->position.x) < 5 && abs(position.y - currentNode->position.y) < 5) {
             currentNode = currentNode->FindNeighborNode(0);
@@ -33,6 +33,7 @@ void pathfinding::playerAgent::Update(float deltaTime)
             currentNode = currentNode->FindNeighborNode(3);
         }
     }
+
     // find out how far we have to go to the next node
     float dx = currentNode->position.x - position.x;
     float dy = currentNode->position.y - position.y;

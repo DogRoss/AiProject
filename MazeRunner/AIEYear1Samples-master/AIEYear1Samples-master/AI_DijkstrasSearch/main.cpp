@@ -19,7 +19,6 @@
 #include <iostream>
 #include "pathfinding.h"
 #include "NodeMap.h"
-#include "PathAgent.h"
 #include "playerAgent.h"
 #include "MazeRunner.h"
 
@@ -60,7 +59,7 @@ int main(int argc, char* argv[])
 	d->connections.push_back(Edge{ f, 4 });
 	f->connections.push_back(Edge{ e, 6 });
 
-	std::vector<Node*> shortestPath = DijkstrasSearch(a, e);
+	std::vector<Node*> shortestPath = AStar(a, e);
 
 	for (Node* node : shortestPath) {
 		std::cout << node->gScore << std::endl;
@@ -83,14 +82,14 @@ int main(int argc, char* argv[])
 	Node* start = nodeMap.GetNode(1, 1);
 	Node* playerStart = nodeMap.GetNode(10, 6);
 	Node* end = nodeMap.GetNode(10, 6);
-	std::vector<Node*> nodeMapPath = DijkstrasSearch(start, end);
+	std::vector<Node*> nodeMapPath = AStar(start, end);
 	Color lineColor = { 255, 255, 255, 255 };
 
 	playerAgent pAgent;
 	pAgent.SetNode(playerStart);
 	pAgent.speed = 200;
 
-	MazeRunner runner;
+	MazeRunner runner; //AI maze runner
 	runner.SetNode(start, end, start, &pAgent, &nodeMap);
 	runner.speed = 100;
 
